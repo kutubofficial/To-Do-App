@@ -19,8 +19,8 @@ const Navbar = () => {
         {},
         { withCredentials: true }
       );
-      localStorage.removeItem("authToken");
       setLoginUser(false);
+      localStorage.removeItem("authToken");
       toast.success("Logged out");
       navigate("/login");
     } catch (err) {
