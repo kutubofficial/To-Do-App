@@ -1,30 +1,41 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AllTodos = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
-    async function getTodos() {
+    const getTodos = async () => {
       try {
-        const cookie = localStorage.getItem("authCookie");
-
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
         const { data } = await axios.get("http://localhost:9001/v1/todos/all", {
-          headers: {
-            Authorization: `Bearer ${cookie}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         });
-
-        console.log(data.token);
-        // console.log(cookie);
+        setTodos(data);
       } catch (err) {
-        console.log("ERROR", err.response?.data?.message || err.message);
+        console.error(
+          "Error fatching All-Todo:",
+          err.response?.data?.message || err.message
+        );
+        navigate("/login");
       }
-    }
-
+    };
     getTodos();
   }, []);
-  return <div>{/* TODO: Fetch and display all todos */}</div>;
+
+  return (
+    <div>
+      {/* {todos?.map((todo) => (
+        <div key={todo._id}>{todo.title}</div>
+      ))} */}
+    </div>
+  );
 };
 
 export default AllTodos;

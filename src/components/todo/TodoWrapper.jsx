@@ -4,7 +4,6 @@ import React, { useState } from "react";
 
 const TodoWrapper = () => {
   const [todos, setTodos] = useState("");
-  //   const [AllTodos, setAllTodos] = useState({ id: 1, todo: "Namoskar🙏" });
   const handleSubmit = (e) => {
     if (todos.trim() !== "") {
       e.preventDefault();

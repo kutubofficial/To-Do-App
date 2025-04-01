@@ -9,36 +9,36 @@ const Login = () => {
     password: "",
   });
   const handleChange = (e) => {
+    e.preventDefault();
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
   const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
     axios
       .post("http://localhost:9001/v1/users/login", userData, {
         headers: {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
         },
+        withCredentials: true,
       })
       .then((res) => {
-        console.log("Login successful:", res.data.token);
-        // console.log({ res }); //get the token form the backend
-        localStorage.setItem("authCookie", res.data.cookie);
+        // console.log("Login successful:", res.data.token);
+        localStorage.setItem("authToken", res.data.token);
+        toast.success("Welcome!");
 
         setUserData({
           email: "",
           password: "",
         });
-        toast.success("WELCOME");
         navigate("/");
       })
       .catch((err) => {
-        // console.log("ERROR", err.response.data.message); //trying to show the exact error message
-        // toast.error(err.response.data.message);
-        console.log("err");
-        
+        const errorMessage = err.response?.data?.message || "Login failed";
+        console.log("ERROR:", errorMessage);
+        toast.error(errorMessage);
         navigate("/signup");
       });
   };

@@ -1,8 +1,33 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const [loginUser, setLoginUser] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    setLoginUser(!!token);
+  }, [loginUser]);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:9001/v1/users/logout",
+        {},
+        { withCredentials: true }
+      );
+      localStorage.removeItem("authToken");
+      setLoginUser(false);
+      toast.success("Logged out");
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout error:", err.response?.data || err.message);
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -14,7 +39,9 @@ const Navbar = () => {
           </Link>
           {loginUser ? (
             <>
-              <Link>Logout</Link>
+              <Link onClick={handleLogout} className="nav-link">
+                Logout
+              </Link>
             </>
           ) : (
             <>
