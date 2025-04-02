@@ -39,7 +39,7 @@ const Login = () => {
         const errorMessage = err.response?.data?.message || "Login failed";
         console.log("ERROR:", errorMessage);
         toast.error(errorMessage);
-        navigate("/signup");
+        // navigate("/signup");
       });
   };
 

@@ -1,14 +1,42 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useState } from "react";
 
-const CreateTodo = ({ todos, handle, handleSubmit }) => {
-  useEffect(() => {
-    async function getData() {
-      // let {data} = axios.post("http://localhost:9001/v1/todos/add");
-      
+const CreateTodo = () => {
+  const [todos, setTodos] = useState({
+    title: "",
+    description: "",
+    priority: "",
+    dueDate: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTodos((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (todos.title.trim() !== "") {
+      try {
+        const token = localStorage.getItem("token");
+
+        let response = await axios.post(
+          "http://localhost:9001/v1/todos/add",
+          todos,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+        setTodos({ title: "", description: "", priority: "", dueDate: "" });
+      } catch (error) {
+        console.error("Error adding todo:", error);
+      }
     }
-    getData();
-  }, []);
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -16,21 +44,52 @@ const CreateTodo = ({ todos, handle, handleSubmit }) => {
           Title:
           <input
             type="text"
+            name="title"
             placeholder="Add a new task"
-            value={todos}
-            onChange={handle}
+            value={todos.title}
+            onChange={handleChange}
           />
         </label>
+
         <label>
-          Priority
-          <input type="radio" name="priority" value="low" />
-          low
-          <input type="radio" name="priority" value="medium" />
-          medium
-          <input type="radio" name="priority" value="high" />
-          high
+          Priority:
+          <input
+            type="radio"
+            name="priority"
+            value="low"
+            checked={todos.priority === "low"}
+            onChange={handleChange}
+          />
+          Low
+          <input
+            type="radio"
+            name="priority"
+            value="medium"
+            checked={todos.priority === "medium"}
+            onChange={handleChange}
+          />
+          Medium
+          <input
+            type="radio"
+            name="priority"
+            value="high"
+            checked={todos.priority === "high"}
+            onChange={handleChange}
+          />
+          High
         </label>
-        <input type="submit" value="Add"/>
+
+        <label>
+          Due Date:
+          <input
+            type="date"
+            name="dueDate"
+            value={todos.dueDate}
+            onChange={handleChange}
+          />
+        </label>
+
+        <input type="submit" value="Add" />
       </form>
     </div>
   );

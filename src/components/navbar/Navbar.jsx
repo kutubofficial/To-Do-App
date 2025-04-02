@@ -27,7 +27,6 @@ const Navbar = () => {
       console.error("Logout error:", err.response?.data || err.message);
     }
   };
-
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -39,6 +38,9 @@ const Navbar = () => {
           </Link>
           {loginUser ? (
             <>
+            <Link to="/profile" className="nav-link">
+                Profile
+              </Link>
               <Link onClick={handleLogout} className="nav-link">
                 Logout
               </Link>

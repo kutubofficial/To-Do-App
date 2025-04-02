@@ -133,3 +133,31 @@ form {
 .nav-link {
   font-size: 18px;
 }
+
+.profile-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+ .heading{
+  /* border: 1px solid #6f1717; */
+  margin-left: 40rem;
+  max-width: 20rem;
+}
+.heading h2{
+  padding-left: 30px;
+  font-size: 35px;
+}
+.profile button{
+  padding: 5px;
+  border-radius: 10px;
+  margin-left:10px;
+}
+.profile button:hover{
+ background-color: #606162;
+ color: white;
+ cursor: pointer;
+}
