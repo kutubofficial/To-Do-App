@@ -9,7 +9,7 @@ const AllTodos = () => {
   useEffect(() => {
     const getTodos = async () => {
       try {
-        const token = localStorage.getItem("authToken");
+        const token = localStorage.getItem("authCookie");
         if (!token) return;
 
         const { data } = await axios.get("http://localhost:9001/v1/todos/all", {

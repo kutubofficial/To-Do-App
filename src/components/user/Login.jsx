@@ -26,7 +26,7 @@ const Login = () => {
       })
       .then((res) => {
         // console.log("Login successful:", res.data.token);
-        localStorage.setItem("authToken", res.data.token);
+        localStorage.setItem("authCookie", res.data.token);
         toast.success("Welcome!");
 
         setUserData({
